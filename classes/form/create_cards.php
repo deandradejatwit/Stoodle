@@ -42,12 +42,20 @@ class create_cards extends \moodleform {
 
         $mform->addElement('textarea', 'set', get_string('setnamestr', 'local_stoodle'));
 
+        $submitlabel = get_string('submit');
+
         $startarray = [
             $mform->createElement('textarea', 'question', get_string('questionstr', 'local_stoodle')),
             $mform->createElement('textarea', 'answer', get_string('answerstr', 'local_stoodle')),
         ];
 
-        $repeatno = 1;
+        $repeatarray = [
+            $mform->createElement('textarea', 'question', get_string('questionstr', 'local_stoodle')),
+            $mform->createElement('textarea', 'answer', get_string('answerstr', 'local_stoodle')),
+            $mform->createElement('submit', 'delete', get_string('deletestr', 'local_stoodle'), [], false),
+        ];
+
+        $repeatno = 3;
 
         $repeateloptions = [
             'question' => [],
@@ -70,6 +78,7 @@ class create_cards extends \moodleform {
             'delete',
         );
 
-        $this->add_action_buttons();
+        $mform->addElement('submit', 'submitcards', $submitlabel);
+
     }
 }

@@ -40,21 +40,13 @@ class select_form extends \moodleform {
         $mform = $this->_form;
 
         $sets = $DB->get_records('flashcard_set', null);
-        if(!empty($sets)){
-            $options = $DB->get_records_menu('flashcard_set', [], 'id', 'id, set_name');
-        } else{
-            $options['-1'] = 'None';
+        $count = 0;
+        $choices = array();
+        $choices['-1'] = 'None';
+        foreach ($sets as $set) {
+            $choices[$count] = $set->set_name;
+            $count++;
         }
-
-        $mform->addElement('select', 'card_sets', get_string('selectstr', 'local_stoodle'), $options);
-
-        $submitlabel = get_string('submit');
-        $mform->registerNoSubmitButton('editset');
-
-        $align = [
-            $mform->createElement('submit', 'submitform', $submitlabel),
-            $mform->createElement('submit', 'editset', get_string('edit')),
-        ];
-        $mform->addGroup($align,'buttons', '','',false);
+        $mform->addElement('select', 'card_sets', get_string('selectstr', 'local_stoodle'), $choices);
     }
 }
