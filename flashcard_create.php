@@ -38,15 +38,26 @@ if ($data = $createcardsform->get_data()) {
     $set = required_param('set', PARAM_TEXT);
     $question = required_param_array('question', PARAM_TEXT);
     $answer = required_param_array('answer', PARAM_TEXT);
+<<<<<<< HEAD
     if (!empty($question)&&!empty($answer)) {
+=======
+
+    if (!empty($set) && check_empty($question, $answer)) {
+>>>>>>> parent of 604c66e (Revert "Reapply "Merge branch 'development' into flashcards-activity"")
         $recordset = new stdClass;
         $record = new stdClass;
 
         $recordset->set_name = $set;
         $recordset->timemodified = time();
 
+<<<<<<< HEAD
         $DB->insert_record('flashcard_set', $recordset);
         $test = $DB->get_record_select('flashcard_set', 'set_name = ?', array($set));
+=======
+        if (!$DB->get_record_select('flashcard_set', 'set_name = ?', [$set])) {
+            $DB->insert_record('flashcard_set', $recordset);
+            $test = $DB->get_record_select('flashcard_set', 'set_name = ?', [$set]);
+>>>>>>> parent of 604c66e (Revert "Reapply "Merge branch 'development' into flashcards-activity"")
 
 
         for ($i = 0; $i <= count($question) - 1; $i++) {
@@ -65,6 +76,25 @@ if ($data = $createcardsform->get_data()) {
     $url = new moodle_url('/local/stoodle/flashcard.php');
     redirect($url);
 }
+<<<<<<< HEAD
+=======
+
+/**
+ * Checks if two arrays are empty
+ *
+ * @param array $arr1 First array
+ * @param array $arr2 Second array
+ */
+function check_empty($arr1, $arr2) {
+    for ($i = 0; $i < count($arr1); $i++) {
+        if (!(empty($arr1[$i]) || empty($arr2[$i]))) {
+            return true;
+        }
+    }
+    return false;
+}
+
+>>>>>>> parent of 604c66e (Revert "Reapply "Merge branch 'development' into flashcards-activity"")
 echo $OUTPUT->header();
 
 $createcardsform->display();

@@ -40,12 +40,19 @@ class select_form extends \moodleform {
         $mform = $this->_form;
 
         $sets = $DB->get_records('flashcard_set', null);
+<<<<<<< HEAD
         $count = 0;
         $choices = array();
         $choices['-1'] = 'None';
         foreach ($sets as $set) {
             $choices[$count] = $set->set_name;
             $count++;
+=======
+        if (!empty($sets)) {
+            $options = $DB->get_records_menu('flashcard_set', [], 'id', 'id, set_name');
+        } else {
+            $options['-1'] = 'None';
+>>>>>>> parent of 604c66e (Revert "Reapply "Merge branch 'development' into flashcards-activity"")
         }
         $mform->addElement('select', 'card_sets', get_string('selectstr', 'local_stoodle'), $choices);
     }
