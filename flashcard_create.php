@@ -43,16 +43,16 @@ if ($createcardsform->is_cancelled()) {
     $question = required_param_array('question', PARAM_TEXT);
     $answer = required_param_array('answer', PARAM_TEXT);
 
-    if (!empty($set) && check_empty($question, $answer)) {
+    if (!empty($set) && checkEmpty($question, $answer)) {
         $recordset = new stdClass;
         $record = new stdClass;
 
         $recordset->set_name = $set;
         $recordset->timemodified = time();
 
-        if (!$DB->get_record_select('flashcard_set', 'set_name = ?', [$set])) {
+        if (!$DB->get_record_select('flashcard_set', 'set_name = ?', array($set))) {
             $DB->insert_record('flashcard_set', $recordset);
-            $test = $DB->get_record_select('flashcard_set', 'set_name = ?', [$set]);
+            $test = $DB->get_record_select('flashcard_set', 'set_name = ?', array($set));
 
             for ($i = 0; $i <= count($question) - 1; $i++) {
                 if (!empty($question[$i])&&!empty($answer[$i])) {
@@ -69,13 +69,7 @@ if ($createcardsform->is_cancelled()) {
     redirect($url);
 }
 
-/**
- * Checks if two arrays are empty
- *
- * @param array $arr1 First array
- * @param array $arr2 Second array
- */
-function check_empty($arr1, $arr2) {
+function checkEmpty($arr1, $arr2) {
     for ($i = 0; $i < count($arr1); $i++) {
         if (!(empty($arr1[$i]) || empty($arr2[$i]))) {
             return true;

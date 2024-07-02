@@ -40,9 +40,9 @@ class select_form extends \moodleform {
         $mform = $this->_form;
 
         $sets = $DB->get_records('flashcard_set', null);
-        if (!empty($sets)) {
+        if(!empty($sets)){
             $options = $DB->get_records_menu('flashcard_set', [], 'id', 'id, set_name');
-        } else {
+        } else{
             $options['-1'] = 'None';
         }
 
