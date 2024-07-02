@@ -57,6 +57,7 @@ if ($createcardsform->is_cancelled()) {
             for ($i = 0; $i <= count($question) - 1; $i++) {
                 if (!empty($question[$i])&&!empty($answer[$i])) {
                     $record->flashcard_set = $test->id;
+                    $record->card_number = $i+1;
                     $record->question = $question[$i];
                     $record->answer = $answer[$i];
                     $record->timemodified = time();
