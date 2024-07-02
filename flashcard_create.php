@@ -23,6 +23,7 @@
  *              Jhonathan Deandrade deandradej@wit.edu
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require_once('../../config.php');
 require_login();
 
@@ -34,36 +35,49 @@ $PAGE->set_heading(get_string('flashcardcreate', 'local_stoodle'));
 
 $createcardsform = new \local_stoodle\form\create_cards();
 
-if ($data = $createcardsform->get_data()) {
+if ($createcardsform->is_cancelled()) {
+    $url = new moodle_url('/local/stoodle/flashcard.php');
+    redirect($url);
+} else if ($data = $createcardsform->get_data()) {
     $set = required_param('set', PARAM_TEXT);
     $question = required_param_array('question', PARAM_TEXT);
     $answer = required_param_array('answer', PARAM_TEXT);
-    if (!empty($question)&&!empty($answer)) {
+
+    if (!empty($set) && checkEmpty($question, $answer)) {
         $recordset = new stdClass;
         $record = new stdClass;
 
         $recordset->set_name = $set;
         $recordset->timemodified = time();
 
-        $DB->insert_record('flashcard_set', $recordset);
-        $test = $DB->get_record_select('flashcard_set', 'set_name = ?', array($set));
+        if (!$DB->get_record_select('flashcard_set', 'set_name = ?', array($set))) {
+            $DB->insert_record('flashcard_set', $recordset);
+            $test = $DB->get_record_select('flashcard_set', 'set_name = ?', array($set));
 
-
-        for ($i = 0; $i <= count($question) - 1; $i++) {
-            if (!empty($question[$i])&&!empty($answer[$i])) {
-                $record->flashcard_set = $test->id;
-                $record->question = $question[$i];
-                $record->answer = $answer[$i];
-                $record->timemodified = time();
-                $DB->insert_record('flashcard_card', $record);
+            for ($i = 0; $i <= count($question) - 1; $i++) {
+                if (!empty($question[$i])&&!empty($answer[$i])) {
+                    $record->flashcard_set = $test->id;
+                    $record->question = $question[$i];
+                    $record->answer = $answer[$i];
+                    $record->timemodified = time();
+                    $DB->insert_record('flashcard_card', $record);
+                }
             }
         }
-    } else {
-        // Need to put error message.
     }
     $url = new moodle_url('/local/stoodle/flashcard.php');
     redirect($url);
 }
+
+function checkEmpty($arr1, $arr2) {
+    for ($i = 0; $i < count($arr1); $i++) {
+        if (!(empty($arr1[$i]) || empty($arr2[$i]))) {
+            return true;
+        }
+    }
+    return false;
+}
+
 echo $OUTPUT->header();
 
 $createcardsform->display();

@@ -26,9 +26,13 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['answerstr'] = 'Enter Answer:';
+$string['currentanswer'] = 'Current Answer:';
+$string['currrentsetname'] = 'Current Set Name:';
+$string['currentquestion'] = 'Current Question:';
 $string['deletestr'] = 'Delete';
 $string['flashcardactivityname'] = 'Flashcards';
 $string['flashcardcreate'] = 'Create Flashcards';
+$string['flashcardedit'] = 'Edit Flashcards';
 $string['pluginname'] = 'Stoodle';
 $string['questionstr'] = 'Enter Question:';
 $string['selectstr'] = 'Select Set';

@@ -26,6 +26,7 @@
 
 require_once('../../config.php');
 require_login();
+global $SESSION;
 
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url(new moodle_url('/local/stoodle/flashcard.php'));
@@ -34,16 +35,38 @@ $PAGE->set_title(get_string('pluginname', 'local_stoodle'));
 $PAGE->set_heading("Flashcard Menu");  // Replace with get_string.
 
 $select = new \local_stoodle\form\select_form();
+if ($select->no_submit_button_pressed()) {
+    $data = $select->get_submitted_data();
+    $set = required_param('card_sets', PARAM_TEXT);
+
+    if($set == -1){
+        $url = new moodle_url('/local/stoodle/flashcard_create.php');
+        redirect($url);
+    }
+
+    $SESSION->edit_set_id = $set;
+
+    $url = new moodle_url('/local/stoodle/flashcard_edit.php');
+    redirect($url);
+} else if ($data = $select->get_data()) {
+    $set = required_param('card_sets', PARAM_TEXT);
+    if($set == -1){
+        $url = new moodle_url('/local/stoodle/flashcard_create.php');
+        redirect($url);
+    }
+    $SESSION->activity_set_name = $set;
+    $url = new moodle_url('/local/stoodle/flashcard_activity.php');
+    redirect($url);
+}
+
 
 echo $OUTPUT->header();
 $select->display();
-
 ?>
 
 <html lang="en">
 <body>
     <div>
-        <a href=""><button type="submit">Submit</button></a>
         <a href="flashcard_create.php"><button>Create New Set</button></a>
     </div>
 
