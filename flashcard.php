@@ -50,7 +50,7 @@ if ($select->no_submit_button_pressed()) {
     redirect($url);
 } else if ($data = $select->get_data()) {
     $set = required_param('card_sets', PARAM_TEXT);
-    if($set == -1){
+    if ($set == -1) {
         $url = new moodle_url('/local/stoodle/flashcard_create.php');
         redirect($url);
     }
@@ -71,8 +71,6 @@ $select->display();
     </div>
 
     <a href="index.php"><button>Back</button></a>
-    <a href="flashcard_activity.php"><button>Activity Test</button></a>
-
 </body>
 </html>
 

@@ -36,7 +36,7 @@ defined('MOODLE_INTERNAL') || die();
 function xmldb_local_stoodle_upgrade($oldversion): bool {
     global $CFG, $DB;
     $dbman = $DB->get_manager();
-    if ($oldversion < 2024062402) {
+    if ($oldversion < 2024062601) {
         // Define table flashcard_card to be dropped.
         $table = new xmldb_table('flashcard_test');
 
@@ -64,8 +64,16 @@ function xmldb_local_stoodle_upgrade($oldversion): bool {
 
         // Launch change of type for field set_name.
         $dbman->change_field_type($table, $field);
+        // Define field card_number to be added to flashcard_card.
+        $table = new xmldb_table('flashcard_card');
+        $field = new xmldb_field('card_number', XMLDB_TYPE_INTEGER, '20', null, XMLDB_NOTNULL, null, '0', 'flashcard_set');
+
+        // Conditionally launch add field card_number.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
         // Stoodle savepoint reached.
-        upgrade_plugin_savepoint(true, 2024062402, 'local', 'stoodle');
+        upgrade_plugin_savepoint(true, 2024062601, 'local', 'stoodle');
     }
     return true;
 }
